@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import AuthGuard from '@/components/AuthGuard';
 import { getSavedFunds, removeFund } from '@/utils/api';
+import NavBar from '@/components/NavBar';
 
 export default function SavedFundsPage() {
   const [fundIds, setFundIds] = useState([]);
@@ -44,6 +45,7 @@ export default function SavedFundsPage() {
 
   return (
     <AuthGuard>
+      <NavBar/>
       <main className="flex flex-col items-center justify-center min-h-screen px-4 py-8 bg-background">
         <h2 className="mb-4 text-xl font-bold text-center sm:text-2xl">Your Saved Mutual Funds</h2>
         {loading ? (

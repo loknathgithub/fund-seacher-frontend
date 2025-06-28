@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import FundInfo from '@/components/FundInfo';
 import { Button } from '@/components/ui/button';
 import { saveFund, getSavedFunds } from '@/utils/api';
+import NavBar from '@/components/NavBar';
 
 export default function FundDetailPage() {
   const { fundId } = useParams();
@@ -93,6 +94,8 @@ export default function FundDetailPage() {
   }
 
   return (
+    <>
+    <NavBar/>
     <main className="flex flex-col items-center justify-center min-h-screen px-4 py-8 bg-background">
       <div className="w-full max-w-lg mx-auto">
         <FundInfo
@@ -112,5 +115,6 @@ export default function FundDetailPage() {
         />
       </div>
     </main>
-  );
+    </>
+      );
 }
