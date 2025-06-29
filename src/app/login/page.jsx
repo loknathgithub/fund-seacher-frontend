@@ -32,7 +32,7 @@ export default function LoginPage() {
         <form onSubmit={handleLogin} className="flex flex-col gap-4">
           <Input
             type="name"
-            placeholder="Name"
+            placeholder="Username"
             value={name}
             onChange={e => setName(e.target.value)}
             required

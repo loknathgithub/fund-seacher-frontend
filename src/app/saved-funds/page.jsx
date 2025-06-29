@@ -34,14 +34,15 @@ export default function SavedFundsPage() {
   }, []);
 
   // Remove fund logic
-  const handleRemove = async (fundId) => {
-    setRemoving(fundId);
-    const data = await removeFund(fundId);
-    if (data.success) {
-      setFundIds(fundIds.filter(id => id !== fundId));
-    }
-    setRemoving(null);
-  };
+const handleRemove = async (fundId) => {
+  setRemoving(fundId);
+  const data = await removeFund(fundId);
+  if (data.success) {
+    setFundIds(prev => prev.filter(id => id !== fundId)); // <-- Use functional update
+  }
+  setRemoving(null);
+};
+
 
   return (
     <AuthGuard>
