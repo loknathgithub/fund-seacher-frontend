@@ -38,7 +38,7 @@ export default function RegisterPage() {
         <form onSubmit={handleRegister} className="flex flex-col gap-4">
           <Input
             type="text"
-            placeholder="Username"
+            placeholder="Username (must be unique)"
             value={username}
             onChange={e => setUsername(e.target.value)}
             required

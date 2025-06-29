@@ -64,6 +64,11 @@ export async function removeFund(fundId) {
       'Authorization': `Bearer ${token}`,
     },
   });
+  if (!res.ok) {
+    // If status is not 2xx, throw error
+    throw new Error('Failed to remove fund');
+  }
   return res.json();
 }
+
 

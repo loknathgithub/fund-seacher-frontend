@@ -13,6 +13,7 @@ export default function SavedFundsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [removing, setRemoving] = useState(null);
+  const [removeError, setRemoveError] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -34,19 +35,23 @@ export default function SavedFundsPage() {
   }, []);
 
   // Remove fund logic
-const handleRemove = async (fundId) => {
+  const handleRemove = async (fundId) => {
+  setRemoveError('');
   setRemoving(fundId);
-  const data = await removeFund(fundId);
-  if (data.success) {
-    setFundIds(prev => prev.filter(id => id !== fundId)); // <-- Use functional update
+  try {
+    await removeFund(fundId); // If this throws, it will go to catch
+    setFundIds(prev => prev.filter(id => id !== fundId));
+  } catch (err) {
+    setRemoveError('Failed to remove fund. Please try again.');
   }
   setRemoving(null);
 };
 
 
+
   return (
     <AuthGuard>
-      <NavBar/>
+      <NavBar />
       <main className="flex flex-col items-center justify-center min-h-screen px-4 py-8 bg-background">
         <h2 className="mb-4 text-xl font-bold text-center sm:text-2xl">Your Saved Mutual Funds</h2>
         {loading ? (
@@ -80,6 +85,9 @@ const handleRemove = async (fundId) => {
               </Card>
             ))}
           </div>
+        )}
+        {removeError && (
+          <div className="mt-4 text-red-500">{removeError}</div>
         )}
       </main>
     </AuthGuard>
