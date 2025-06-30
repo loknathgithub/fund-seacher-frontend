@@ -28,10 +28,18 @@ function LandingPage() {
     setLoading(true);
 
     try {
-      const res = await fetch(`https://api.mfapi.in/mf/search?q=${encodeURIComponent(query.trim())}`);
+      const res = await fetch(
+        `https://api.mfapi.in/mf/search?q=${encodeURIComponent(query.trim())}`
+      );
       if (!res.ok) throw new Error('Network error');
       const data = await res.json();
-      setResults(Array.isArray(data) ? data : []);
+
+      // Sort results alphabetically by schemeName
+      const sortedData = Array.isArray(data)
+        ? data.sort((a, b) => a.schemeName.localeCompare(b.schemeName))
+        : [];
+
+      setResults(sortedData);
     } catch (err) {
       setError('Failed to fetch results. Please try again.');
     }
@@ -70,26 +78,21 @@ function LandingPage() {
               <span className="inline-block w-8 h-8 border-4 border-blue-500 rounded-full animate-spin border-t-transparent"></span>
             </div>
           )}
-          {!loading && !error && query && (
-            results.length === 0 && hasSearched ? (
+          {!loading && !error && hasSearched && (
+            results.length === 0 ? (
               <div className="py-4 text-center text-muted-foreground">
                 No results found.
               </div>
             ) : (
-              results.length > 0 && (
-                <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-                  {results.map((fund) => {
-                    const { fund_house, scheme_type, scheme_category, ...filteredFund } = fund;
-                    return (
-                      <FundCard
-                        key={fund.schemeCode}
-                        fund={filteredFund}
-                        onClick={() => router.push(`/funds/${fund.schemeCode}`)}
-                      />
-                    );
-                  })}
-                </div>
-              )
+              <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+                {results.map((fund) => (
+                  <FundCard
+                    key={fund.schemeCode}
+                    fund={fund}
+                    onClick={() => router.push(`/funds/${fund.schemeCode}`)}
+                  />
+                ))}
+              </div>
             )
           )}
         </div>
